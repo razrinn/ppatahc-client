@@ -1,15 +1,25 @@
 import * as React from "react";
-import { Box, ChakraProvider, Grid, Text, theme } from "@chakra-ui/react";
+import { Box, ChakraProvider, Grid, Heading, theme } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./utils/ColorModeSwitcher";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import UserIdPopover from "./components/UserIdPopover";
 
-export const App = () => {
+const App = () => {
   const [userId, setUserId] = useLocalStorage("uuid", "");
   return (
     <ChakraProvider theme={theme}>
-      <Grid p={3} bg="rgba(0,0,0,0.1)" position="fixed" w="100%">
+      <Grid
+        templateColumns="repeat(2, 1fr)"
+        p={3}
+        bg="rgba(0,0,0,0.1)"
+        position="fixed"
+        w="100%"
+      >
+        <Heading as="h1" size="s" alignSelf="center">
+          Your ID: <UserIdPopover userId={userId} />
+        </Heading>
         <ColorModeSwitcher justifySelf="flex-end" border="1px" />
       </Grid>
       <Box pt="64px" h="100vh">
@@ -18,3 +28,5 @@ export const App = () => {
     </ChakraProvider>
   );
 };
+
+export default App;

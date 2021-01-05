@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ({ onFormSubmit = () => {} }) => {
     onFormSubmit(uuid());
   };
   return (
-    <Container>
+    <Container h="100%">
       <Flex justifyContent="center" h="100%" flexDir="column">
         <Heading as="h1" size="xl">
           Login to ChatApp
