@@ -5,6 +5,7 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import UserIdPopover from "./components/UserIdPopover";
+import { ContactProvider } from "./contexts/ContactProvider";
 
 const App = () => {
   const [userId, setUserId] = useLocalStorage("uuid", "");
@@ -23,7 +24,13 @@ const App = () => {
         <ColorModeSwitcher justifySelf="flex-end" border="1px" />
       </Grid>
       <Box pt="64px" h="100vh">
-        {userId ? <Dashboard /> : <Login onFormSubmit={setUserId} />}
+        {userId ? (
+          <ContactProvider>
+            <Dashboard />
+          </ContactProvider>
+        ) : (
+          <Login onFormSubmit={setUserId} />
+        )}
       </Box>
     </ChakraProvider>
   );
