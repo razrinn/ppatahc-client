@@ -1,38 +1,20 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import * as React from "react";
+import { Box, ChakraProvider, Grid, Text, theme } from "@chakra-ui/react";
+import { ColorModeSwitcher } from "./utils/ColorModeSwitcher";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
+export const App = () => {
+  const [userId, setUserId] = useLocalStorage("uuid", "");
+  return (
+    <ChakraProvider theme={theme}>
+      <Grid p={3} bg="rgba(0,0,0,0.1)" position="fixed" w="100%">
+        <ColorModeSwitcher justifySelf="flex-end" border="1px" />
       </Grid>
-    </Box>
-  </ChakraProvider>
-)
+      <Box pt="64px" h="100vh">
+        {userId ? <Dashboard /> : <Login onFormSubmit={setUserId} />}
+      </Box>
+    </ChakraProvider>
+  );
+};
