@@ -1,6 +1,8 @@
-import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { MdChat, MdPersonAdd } from "react-icons/md";
+import { useChatRooms } from "../../contexts/ChatRoomsProvider";
+import ChatRoom from "../ChatRoom";
 import ChatList from "../ChatRoomList";
 import NewChatModal from "../NewChatModal";
 import NewContactModal from "../NewContactModal";
@@ -8,13 +10,24 @@ import NewContactModal from "../NewContactModal";
 const Dashboard = () => {
   const [isOpenChat, setIsOpenChat] = useState(false);
   const [isOpenContact, setIsOpenContact] = useState(false);
+  const { chatRooms, selectedChatRoom } = useChatRooms();
   return (
     <Flex h="100%" position="relative">
-      <Box h="inherit" width="384px">
-        <ChatList />
+      <Box h="inherit" width="512px">
+        {chatRooms.length > 0 ? (
+          <ChatList />
+        ) : (
+          <Text>No chat chat room yet. Please create a new one.</Text>
+        )}
       </Box>
       <Box h="inherit" flexGrow={1} bg="rgba(0,0,0,0.25)">
-        asd
+        {selectedChatRoom ? (
+          <ChatRoom />
+        ) : (
+          <Text>
+            No chat chat room selected. Please click a chat room to select.
+          </Text>
+        )}
       </Box>
       <ButtonGroup spacing="6" position="absolute" bottom={8} left={8}>
         <Button
