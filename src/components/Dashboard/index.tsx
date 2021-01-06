@@ -1,6 +1,7 @@
 import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { MdChat, MdPersonAdd } from "react-icons/md";
+import ChatList from "../ChatRoomList";
 import NewChatModal from "../NewChatModal";
 import NewContactModal from "../NewContactModal";
 
@@ -9,10 +10,10 @@ const Dashboard = () => {
   const [isOpenContact, setIsOpenContact] = useState(false);
   return (
     <Flex h="100%" position="relative">
-      <Box h="100%" width="25%">
-        asd
+      <Box h="inherit" width="384px">
+        <ChatList />
       </Box>
-      <Box h="100%" w="75%" bg="rgba(0,0,0,0.25)">
+      <Box h="inherit" flexGrow={1} bg="rgba(0,0,0,0.25)">
         asd
       </Box>
       <ButtonGroup spacing="6" position="absolute" bottom={8} left={8}>

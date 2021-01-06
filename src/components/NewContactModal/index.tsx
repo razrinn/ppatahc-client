@@ -14,7 +14,8 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { SyntheticEvent, useRef } from "react";
+import { useContacts } from "../../contexts/ContactProvider";
 
 interface Props {
   isOpen: boolean;
@@ -25,6 +26,17 @@ const NewContactModal: React.FC<Props> = ({
   isOpen,
   handleCloseModal = () => {},
 }) => {
+  const idRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const { addContact } = useContacts();
+  const handleCreateContact = (event: SyntheticEvent) => {
+    event.preventDefault();
+    if (idRef && idRef.current && nameRef && nameRef.current) {
+      console.log("masuk");
+      addContact({ id: idRef.current.value, name: nameRef.current.value });
+      handleCloseModal();
+    }
+  };
   return (
     <Modal isOpen={isOpen} onClose={handleCloseModal} scrollBehavior="inside">
       <ModalOverlay />
@@ -32,21 +44,28 @@ const NewContactModal: React.FC<Props> = ({
         <ModalHeader>Create New Contact</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
-            <FormLabel>User ID</FormLabel>
-            <Input
-              type="text"
-              placeholder="Example: 'aysdh23-21663gb-asdhsabh'"
-            />
-            <FormHelperText>Your new friend user ID.</FormHelperText>
-          </FormControl>
-          <FormControl mt={6}>
-            <FormLabel>Name</FormLabel>
-            <Input type="text" placeholder="Example: 'John Doe'" />
-          </FormControl>
+          <form id="create-contact" onSubmit={handleCreateContact}>
+            <FormControl isRequired>
+              <FormLabel>User ID</FormLabel>
+              <Input
+                type="text"
+                placeholder="Example: 'aysdh23-21663gb-asdhsabh'"
+                ref={idRef}
+              />
+              <FormHelperText>Your new friend user ID.</FormHelperText>
+            </FormControl>
+            <FormControl mt={6} isRequired>
+              <FormLabel>Name</FormLabel>
+              <Input
+                type="text"
+                placeholder="Example: 'John Doe'"
+                ref={nameRef}
+              />
+            </FormControl>
+          </form>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3}>
+          <Button colorScheme="blue" mr={3} type="submit" form="create-contact">
             Create
           </Button>
           <Button

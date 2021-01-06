@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import UserIdPopover from "./components/UserIdPopover";
 import { ContactProvider } from "./contexts/ContactProvider";
+import { ChatRoomsProvider } from "./contexts/ChatRoomsProvider";
 
 const App = () => {
   const [userId, setUserId] = useLocalStorage("uuid", "");
@@ -17,16 +18,25 @@ const App = () => {
         bg="rgba(0,0,0,0.1)"
         position="fixed"
         w="100%"
+        zIndex={1000}
       >
         <Heading as="h1" size="s" alignSelf="center">
-          Your ID: <UserIdPopover userId={userId} />
+          {userId ? (
+            <>
+              Your ID: <UserIdPopover userId={userId} />
+            </>
+          ) : (
+            "ChatApp"
+          )}
         </Heading>
         <ColorModeSwitcher justifySelf="flex-end" border="1px" />
       </Grid>
       <Box pt="64px" h="100vh">
         {userId ? (
           <ContactProvider>
-            <Dashboard />
+            <ChatRoomsProvider>
+              <Dashboard />
+            </ChatRoomsProvider>
           </ContactProvider>
         ) : (
           <Login onFormSubmit={setUserId} />

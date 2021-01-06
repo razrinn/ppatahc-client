@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
-interface Contact {
+export interface Contact {
   id: string;
   name: string;
 }
@@ -11,9 +11,10 @@ interface InitialState {
   addContact(contact: Contact): void;
 }
 
-const ContactsContext = React.createContext<InitialState | undefined>(
-  undefined
-);
+const ContactsContext = React.createContext<InitialState>({
+  contacts: [],
+  addContact: () => {},
+});
 
 export const useContacts = () => {
   return React.useContext(ContactsContext);
