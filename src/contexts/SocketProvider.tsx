@@ -21,7 +21,9 @@ export const SocketProvider: React.FC<Props> = ({ userId, children }) => {
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   useEffect(() => {
-    const newSocket = io("http://localhost:5000", {
+    const SOCKET_HOST =
+      process.env.NODE_ENV_SOCKET_HOST || "http://localhost:5000";
+    const newSocket = io(SOCKET_HOST, {
       query: { id: userId },
     });
     if (newSocket) {

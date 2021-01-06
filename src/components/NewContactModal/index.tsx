@@ -32,7 +32,6 @@ const NewContactModal: React.FC<Props> = ({
   const handleCreateContact = (event: SyntheticEvent) => {
     event.preventDefault();
     if (idRef && idRef.current && nameRef && nameRef.current) {
-      console.log("masuk");
       addContact({ id: idRef.current.value, name: nameRef.current.value });
       handleCloseModal();
     }
