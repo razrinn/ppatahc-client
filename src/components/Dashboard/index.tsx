@@ -17,14 +17,14 @@ const Dashboard = () => {
         {chatRooms.length > 0 ? (
           <ChatList />
         ) : (
-          <Text>No chat chat room yet. Please create a new one.</Text>
+          <Text p={6}>No chat chat room yet. Please create a new one.</Text>
         )}
       </Box>
       <Box h="inherit" w="75%" bg="rgba(0,0,0,0.25)">
         {selectedChatRoom ? (
           <ChatRoom />
         ) : (
-          <Text>
+          <Text p={6}>
             No chat chat room selected. Please click a chat room to select.
           </Text>
         )}

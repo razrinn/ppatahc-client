@@ -47,14 +47,14 @@ const Login: React.FC<Props> = ({ onFormSubmit = () => {} }) => {
             </FormControl>
             <ButtonGroup spacing="6" mt={4}>
               <Button colorScheme="blue" type="submit">
-                Login
+                Use Custom ID
               </Button>
               <Button
                 variant="outline"
                 colorScheme="blue"
                 onClick={onCreateNewId}
               >
-                Create a New ID
+                Create a New Random ID
               </Button>
             </ButtonGroup>
           </form>

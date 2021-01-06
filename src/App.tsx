@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard";
 import UserIdPopover from "./components/UserIdPopover";
 import { ContactProvider } from "./contexts/ContactProvider";
 import { ChatRoomsProvider } from "./contexts/ChatRoomsProvider";
+import { SocketProvider } from "./contexts/SocketProvider";
 
 const App = () => {
   const [userId, setUserId] = useLocalStorage("uuid", "");
@@ -33,11 +34,13 @@ const App = () => {
       </Grid>
       <Box pt="64px" h="100vh">
         {userId ? (
-          <ContactProvider>
-            <ChatRoomsProvider userId={userId}>
-              <Dashboard />
-            </ChatRoomsProvider>
-          </ContactProvider>
+          <SocketProvider userId={userId}>
+            <ContactProvider>
+              <ChatRoomsProvider userId={userId}>
+                <Dashboard />
+              </ChatRoomsProvider>
+            </ContactProvider>
+          </SocketProvider>
         ) : (
           <Login onFormSubmit={setUserId} />
         )}

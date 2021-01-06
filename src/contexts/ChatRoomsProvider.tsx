@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { Contact, useContacts } from "./ContactProvider";
+import { useSocket } from "./SocketProvider";
 
 export interface ChatRoom {
   recipients: Contact[];
@@ -52,7 +53,7 @@ export const ChatRoomsProvider: React.FC<Props> = ({ userId, children }) => {
   );
   const [selectedChatRoomIdx, setSelectedChatRoomIdx] = useState(0);
   const { contacts } = useContacts();
-
+  const { socket } = useSocket();
   const addChatRooms = (recipients: Contact[]) => {
     setChatRooms((prevState) => [
       ...(prevState as ChatRoom[]),
@@ -73,32 +74,36 @@ export const ChatRoomsProvider: React.FC<Props> = ({ userId, children }) => {
     }
   );
 
-  const addMessageToChatRoom = ({ recipients, text, sender }: MessageParam) => {
-    const newMessage: Message = { sender, text };
-    setChatRooms((prev) => {
-      let madeAnyChange = false;
-      const newChatRoom = (prev as ChatRoom[]).map((chatRoom) => {
-        if (chatRoomEqual(chatRoom.recipients, recipients)) {
-          madeAnyChange = true;
-          return {
-            ...chatRoom,
-            messages: [...chatRoom.messages, newMessage],
-          };
+  const addMessageToChatRoom = useCallback(
+    ({ recipients, text, sender }: MessageParam) => {
+      const newMessage: Message = { sender, text };
+      setChatRooms((prev) => {
+        let madeAnyChange = false;
+        const newChatRoom = (prev as ChatRoom[]).map((chatRoom) => {
+          if (chatRoomEqual(chatRoom.recipients, recipients)) {
+            madeAnyChange = true;
+            return {
+              ...chatRoom,
+              messages: [...chatRoom.messages, newMessage],
+            };
+          }
+          return chatRoom;
+        });
+        if (madeAnyChange) {
+          return newChatRoom;
+        } else {
+          return [
+            { recipients, messages: [newMessage] },
+            ...(prev as ChatRoom[]),
+          ];
         }
-        return chatRoom;
       });
-      if (madeAnyChange) {
-        return newChatRoom;
-      } else {
-        return [
-          { recipients, messages: [newMessage] },
-          ...(prev as ChatRoom[]),
-        ];
-      }
-    });
-  };
+    },
+    [setChatRooms]
+  );
 
   const sendMessage = (recipients: Contact[], text: string) => {
+    socket?.emit("send-message", { recipients, text, sender: userId });
     addMessageToChatRoom({
       recipients: recipients,
       text: text,
@@ -113,6 +118,16 @@ export const ChatRoomsProvider: React.FC<Props> = ({ userId, children }) => {
     selectChatRoom: setSelectedChatRoomIdx,
     sendMessage,
   };
+
+  useEffect(() => {
+    if (socket === null || typeof socket === "undefined") {
+      return;
+    }
+    socket.on("receive-message", addMessageToChatRoom);
+    return () => {
+      socket.off("receive-message");
+    };
+  }, [socket, addMessageToChatRoom]);
 
   return (
     <ChatRoomsContext.Provider value={value}>
