@@ -34,7 +34,7 @@ const App = () => {
       <Box pt="64px" h="100vh">
         {userId ? (
           <ContactProvider>
-            <ChatRoomsProvider>
+            <ChatRoomsProvider userId={userId}>
               <Dashboard />
             </ChatRoomsProvider>
           </ContactProvider>

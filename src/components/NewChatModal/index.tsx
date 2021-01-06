@@ -12,6 +12,7 @@ import {
   Checkbox,
   FormControl,
   FormLabel,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
@@ -28,6 +29,7 @@ const NewChatModal: React.FC<Props> = ({
   handleCloseModal = () => {},
 }) => {
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
+  const [isError, setIsError] = useState(false);
   const { contacts } = useContacts();
   const { addChatRooms } = useChatRooms();
   const handleChangeCheckbox = (contact: Contact) => {
@@ -40,20 +42,38 @@ const NewChatModal: React.FC<Props> = ({
     });
   };
   const handleCreateChat = () => {
-    addChatRooms(selectedContacts);
+    if (selectedContacts.length > 0) {
+      addChatRooms(selectedContacts);
+      closeAndResetError();
+    } else {
+      setIsError(true);
+    }
+  };
+  const closeAndResetError = () => {
+    setIsError(false);
     handleCloseModal();
   };
   return (
-    <Modal isOpen={isOpen} onClose={handleCloseModal} scrollBehavior="inside">
+    <Modal isOpen={isOpen} onClose={closeAndResetError} scrollBehavior="inside">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Create New Chat</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl>
-            <FormLabel>Select Friend(s) to Add to Chat Room</FormLabel>
+            <FormLabel>Select Contact(s) to Add to Chat Room</FormLabel>
+            {contacts.length === 0 && (
+              <Text fontSize="xs" color="red.500">
+                No contacts yet. Please add new Contact.
+              </Text>
+            )}
+            {isError && (
+              <Text fontSize="xs" color="red.500">
+                No contact(s) selected
+              </Text>
+            )}
             <VStack alignItems="flex-start">
-              {contacts.map((contact: Contact) => (
+              {contacts.map((contact) => (
                 <Checkbox
                   colorScheme="blue"
                   key={contact.id}
@@ -67,7 +87,6 @@ const NewChatModal: React.FC<Props> = ({
               ))}
             </VStack>
           </FormControl>
-          <code>{JSON.stringify(selectedContacts)}</code>
         </ModalBody>
 
         <ModalFooter>
@@ -77,7 +96,7 @@ const NewChatModal: React.FC<Props> = ({
           <Button
             variant="outline"
             colorScheme="blue"
-            onClick={handleCloseModal}
+            onClick={closeAndResetError}
           >
             Cancel
           </Button>

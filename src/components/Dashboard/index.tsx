@@ -13,14 +13,14 @@ const Dashboard = () => {
   const { chatRooms, selectedChatRoom } = useChatRooms();
   return (
     <Flex h="100%" position="relative">
-      <Box h="inherit" width="512px">
+      <Box h="inherit" w="25%">
         {chatRooms.length > 0 ? (
           <ChatList />
         ) : (
           <Text>No chat chat room yet. Please create a new one.</Text>
         )}
       </Box>
-      <Box h="inherit" flexGrow={1} bg="rgba(0,0,0,0.25)">
+      <Box h="inherit" w="75%" bg="rgba(0,0,0,0.25)">
         {selectedChatRoom ? (
           <ChatRoom />
         ) : (

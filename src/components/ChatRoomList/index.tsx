@@ -1,13 +1,12 @@
-import { Box, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import { useChatRooms } from "../../contexts/ChatRoomsProvider";
 
 const ChatList = () => {
   const { chatRooms, selectChatRoom } = useChatRooms();
-  const { colorMode } = useColorMode();
-  const bgColor = colorMode === "dark" ? "blue.200" : "blue.500";
-  const textColor = colorMode === "dark" ? "gray.800" : "white";
-  const borderColor = colorMode === "dark" ? "gray.700" : "gray.50";
+  const bgColor = useColorModeValue("blue.500", "blue.200");
+  const textColor = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("#E2E8F0", "#2D3748");
   return (
     <>
       {chatRooms.map((chatRoom, idx) => (
@@ -28,7 +27,11 @@ const ChatList = () => {
               .map((recipient) => recipient.name || recipient.id)
               .join(", ")}
           </Text>
-          <Text fontSize={12}>Lorem ipsum dolor sit amet.</Text>
+          {chatRoom.messages.length > 0 && (
+            <Text fontSize={12}>
+              {chatRoom.messages[chatRoom.messages.length - 1].text}
+            </Text>
+          )}
         </Box>
       ))}
     </>
