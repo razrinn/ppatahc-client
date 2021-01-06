@@ -27,7 +27,7 @@ const App = () => {
               Your ID: <UserIdPopover userId={userId} />
             </>
           ) : (
-            "ChatApp"
+            "ChatApp!"
           )}
         </Heading>
         <ColorModeSwitcher justifySelf="flex-end" border="1px" />
