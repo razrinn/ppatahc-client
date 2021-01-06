@@ -1,1 +1,1 @@
-export const LOCAL_STORAGE_PREFIX = "cht-app-"
+export const LOCAL_STORAGE_PREFIX = "cht-app-";

@@ -1,4 +1,4 @@
-import { Box, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import { useChatRooms } from "../../contexts/ChatRoomsProvider";
 
