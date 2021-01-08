@@ -24,7 +24,9 @@ export const SocketProvider: React.FC<Props> = ({ userId, children }) => {
     const SOCKET_HOST =
       process.env.REACT_APP_SOCKET_HOST || "http://localhost:5000";
     const newSocket = io(SOCKET_HOST, {
+      secure: true,
       query: { id: userId },
+      transports: ["websocket"],
     });
     if (newSocket) {
       setSocket(newSocket);
