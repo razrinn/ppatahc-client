@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { chatRooms, selectedChatRoom } = useChatRooms();
   return (
     <Flex h="100%" position="relative">
-      <Box h="inherit" w="25%">
+      <Box h="90%" w="25%" overflow="auto">
         {chatRooms.length > 0 ? (
           <ChatList />
         ) : (

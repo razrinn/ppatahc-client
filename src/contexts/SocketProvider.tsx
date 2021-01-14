@@ -29,6 +29,9 @@ export const SocketProvider: React.FC<Props> = ({ userId, children }) => {
       transports: ["websocket"],
     });
     if (newSocket) {
+      newSocket.io.on("reconnect_attempt", () => {
+        newSocket.io.opts.transports = ["polling", "websocket"];
+      });
       setSocket(newSocket);
     }
     return () => {

@@ -29,7 +29,12 @@ const ChatList = () => {
           </Text>
           {chatRoom.messages.length > 0 && (
             <Text fontSize={12}>
-              {chatRoom.messages[chatRoom.messages.length - 1].text}
+              {chatRoom.messages[chatRoom.messages.length - 1].text.slice(
+                0,
+                120
+              )}
+              {chatRoom.messages[chatRoom.messages.length - 1].text.length >
+                120 && "..."}
             </Text>
           )}
         </Box>
